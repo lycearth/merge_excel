@@ -101,7 +101,7 @@ if uploaded_files:
 
 # ========== 处理大表 ==========
 if st.session_state.small_table_info and big_table_file:
-    st.subheader("📄 大表预览（未设置表头）")
+    st.subheader("📄 工资表预览")
 
     # 先读取预览数据（不指定表头）
     preview_df = preview_file(big_table_file)
@@ -109,7 +109,7 @@ if st.session_state.small_table_info and big_table_file:
 
     # 选择表头行
     big_header_row = st.number_input(
-        "大表表头行 (从0开始)", min_value=0, max_value=10, value=0, key="big_header"
+        "工资表头行 (从0开始)", min_value=0, max_value=10, value=0, key="big_header"
     )
 
     # 用用户选择的表头行重新读取文件
@@ -118,7 +118,7 @@ if st.session_state.small_table_info and big_table_file:
     # 选择姓名列
     auto_name_col_big = find_name_col(big_df.columns)
     big_name_col = st.selectbox(
-        "大表姓名列",
+        "工资表姓名列",
         big_df.columns.tolist(),
         index=big_df.columns.get_loc(auto_name_col_big) if auto_name_col_big in big_df.columns else 0,
         key="big_namecol"
