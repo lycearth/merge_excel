@@ -102,14 +102,13 @@ if uploaded_files:
 # ========== 处理大表 ==========
 if st.session_state.small_table_info and big_table_file:
     # 读取大表
+    # 📌 预览大表前五行
+    st.subheader("📄 大表预览")
+
     big_header_row = st.number_input(
         "工资表表头行 (从0开始)", min_value=0, max_value=10, value=0, key="big_header"
     )
     big_df = read_file(big_table_file, big_header_row)
-
-    # 📌 预览大表前五行
-    st.subheader("📄 工资表预览")
-    st.dataframe(big_df.head(5))
 
     auto_name_col_big = find_name_col(big_df.columns)
     big_name_col = st.selectbox(
