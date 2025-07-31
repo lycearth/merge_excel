@@ -63,14 +63,14 @@ if "small_table_info" not in st.session_state:
 
 
 # ========== 上传文件 ==========
-st.title("📊 多个小表格合并并填充到大表格")
+st.title("📊 多个数据表格合并并填充到工资表格")
 
-uploaded_files = st.file_uploader("上传小表格（多个）", type=["xlsx", "xls", "csv"], accept_multiple_files=True)
-big_table_file = st.file_uploader("上传大表格模板", type=["xlsx", "xls", "csv"])
+uploaded_files = st.file_uploader("上传数据表（多个）", type=["xlsx", "xls", "csv"], accept_multiple_files=True)
+big_table_file = st.file_uploader("上传工资表模板", type=["xlsx", "xls", "csv"])
 
 # ========== 处理小表 ==========
 if uploaded_files:
-    st.subheader("📄 配置每个小表的表头行和姓名列")
+    st.subheader("📄 配置每个数据表的表头行和姓名列")
     st.session_state.small_table_info = []
 
     for idx, file in enumerate(uploaded_files):
@@ -103,13 +103,13 @@ if uploaded_files:
 if st.session_state.small_table_info and big_table_file:
     # 读取大表
     big_header_row = st.number_input(
-        "大表表头行 (从0开始)", min_value=0, max_value=10, value=0, key="big_header"
+        "工资表表头行 (从0开始)", min_value=0, max_value=10, value=0, key="big_header"
     )
     big_df = read_file(big_table_file, big_header_row)
 
     auto_name_col_big = find_name_col(big_df.columns)
     big_name_col = st.selectbox(
-        "大表姓名列",
+        "工资表姓名列",
         big_df.columns.tolist(),
         index=big_df.columns.get_loc(auto_name_col_big) if auto_name_col_big in big_df.columns else 0,
         key="big_namecol"
@@ -118,7 +118,7 @@ if st.session_state.small_table_info and big_table_file:
     st.subheader("🛠 配置计算规则")
 
     table_idx = st.selectbox(
-        "选择小表来源",
+        "选择数据表来源",
         options=list(range(len(st.session_state.small_table_info))),
         index=0,
         format_func=lambda i: f"表 {i+1} ({st.session_state.small_table_info[i]['file']})",
@@ -149,7 +149,7 @@ if st.session_state.small_table_info and big_table_file:
             col_ops.append(op)
             col_weights.append(w)
 
-    target = st.selectbox("选择结果填入的大表列", big_df.columns.tolist())
+    target = st.selectbox("选择结果填入的工资表列", big_df.columns.tolist())
 
     if st.button("➕ 添加规则"):
         if cols and target:
@@ -166,7 +166,7 @@ if st.session_state.small_table_info and big_table_file:
             st.warning("请选择列并填写目标列名")
 
 else:
-    st.info("👆 请先上传至少一个小表和一个大表，才能配置计算规则")
+    st.info("👆 请先上传至少一个数据表和一个工资表，才能配置计算规则")
 
 # ========== 显示规则 ==========
 if st.session_state.rules:
@@ -192,7 +192,7 @@ if st.session_state.rules:
 if st.session_state.rules and st.button("🚀 生成结果"):
     # ✅ 确保 big_df 存在
     if "big_df" not in locals():
-        st.error("请先上传并读取大表文件")
+        st.error("请先上传并读取工资表文件")
     else:
         result_df = big_df.copy()
 
